@@ -17,6 +17,8 @@ def home():
 
 @app.route("/movies")
 def all_movies():
+    if 'user_id' not in session:
+        return redirect("/login")
 
     movies = crud.get_movies()
     return render_template("movies.html", movies=movies)
@@ -120,7 +122,9 @@ def logout():
 
 @app.route("/users/<user_id>")
 def user_details(user_id):
-
+    if 'user_id' not in session:
+        return redirect("/login")
+    
     user = crud.get_user(user_id)
     rating = crud.get_rating_for_user(user_id)
     return render_template("user.html", user=user, rating=rating)
